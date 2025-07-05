@@ -1,4 +1,4 @@
-package tui
+package index
 
 import (
 	"fmt"
@@ -51,7 +51,7 @@ func (m Tui) UiPushEsc() string {
 	menuHeader := lipgloss.NewStyle().
 		Padding(0, 2, 1, 2).
 		Foreground(lipgloss.Color(consts.ColorText)).
-		Render("XiaoCode Menu v1.0.0")
+		Render("XiaoCode Menu [XiaoLFeng]")
 
 	// 菜单底部UiPushEsc
 	menuFooter := lipgloss.NewStyle().

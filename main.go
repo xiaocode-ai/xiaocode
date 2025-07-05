@@ -5,11 +5,12 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/xiaocode-ai/xiaocode/internal/tui"
+	"github.com/xiaocode-ai/xiaocode/internal/tui/index"
 )
 
 func main() {
-	custom := tui.NewCustom()
-	keyboard := tui.NewKeyboard()
+	custom := index.NewCustom()
+	keyboard := index.NewKeyboard()
 
 	// 创建一个初始的 Model 实例
 	tui := tea.NewProgram(

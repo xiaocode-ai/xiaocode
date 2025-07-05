@@ -1,4 +1,4 @@
-package tui
+package index
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
@@ -32,4 +32,15 @@ func GetInit(custom *CustomOperate) (spinner.Model, textinput.Model) {
 	input.Focus()
 
 	return spin, input
+}
+
+func NewTui(custom *CustomOperate, keyboard *CustomKeyboard) *Tui {
+	spin, input := GetInit(custom)
+
+	return &Tui{
+		custom:    custom,
+		keyboard:  keyboard,
+		spinner:   spin,
+		textInput: input,
+	}
 }
