@@ -1,0 +1,9 @@
+### System ###
+.DS_Store
+
+### Custom Ignore ###
+.idea/
+.vscode/
+.cursorrules
+.cursorignore
+.cursorignore
