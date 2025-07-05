@@ -8,11 +8,12 @@ import (
 )
 
 func main() {
-	custom := tui.GetCustom()
+	custom := tui.NewCustom()
+	keyboard := tui.NewKeyboard()
 
 	// 创建一个初始的 Model 实例
 	tui := tea.NewProgram(
-		tui.New(custom),
+		tui.New(custom, keyboard),
 		tea.WithAltScreen(),
 		tea.WithMouseCellMotion(),
 	)
