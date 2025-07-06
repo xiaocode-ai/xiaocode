@@ -29,6 +29,7 @@ type Keyboard struct {
 
 type Custom struct {
 	plzInputContent bool // 请输入内容
+	aiReady         bool // AI 是否准备好
 }
 
 type Chat struct {
@@ -76,7 +77,7 @@ func (m *Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.textArea.SetHeight(1)
 					m.textArea.Reset()
 					return m, nil
-				case 4:
+				default:
 					return m, tea.Quit
 				}
 			default:
@@ -92,7 +93,7 @@ func (m *Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, nil
 			case tea.KeyEnter:
 				m.textArea.SetHeight(1)
-				if m.textArea.Value() != "" {
+				if m.textArea.Value() != "" && m.custom.aiReady {
 					m.chat.chat = append(m.chat.chat, &CurrentChat{
 						user:    "user",
 						content: m.textArea.Value(),
@@ -168,6 +169,7 @@ func NewTui(keyboard *Keyboard) *Tui {
 		},
 		custom: &Custom{
 			plzInputContent: false,
+			aiReady:         false,
 		},
 	}
 }

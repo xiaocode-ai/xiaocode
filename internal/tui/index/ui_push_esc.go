@@ -13,8 +13,9 @@ var (
 	menuItem = []string{
 		"设置",
 		"帮助",
-		"大模型",
-		"MCP 服务",
+		"历史",
+		"AI[LLM]",
+		"工具[MCP]",
 		"退出",
 	}
 )
@@ -23,13 +24,13 @@ var (
 var (
 	selectedMenuIndex = 0
 	menuItemStyle     = lipgloss.NewStyle().
-				Width(12).
+				Width(14).
 				Align(lipgloss.Center).
 				Background(lipgloss.Color(consts.ColorBackground)).
 				Foreground(lipgloss.Color(consts.ColorText)).
 				Padding(0, 1)
 	menuSelectedItemStyle = lipgloss.NewStyle().
-				Width(12).
+				Width(14).
 				Align(lipgloss.Center).
 				Background(lipgloss.Color(consts.ColorDarkPrimary)).
 				Foreground(lipgloss.Color(consts.ColorText)).
@@ -51,7 +52,7 @@ func (m *Tui) UiPushEsc() string {
 	menuHeader := lipgloss.NewStyle().
 		Padding(0, 2, 1, 2).
 		Foreground(lipgloss.Color(consts.ColorText)).
-		Render("XiaoCode Menu [XiaoLFeng]")
+		Render(fmt.Sprintf("%s Menu [%s]", consts.GlobalName, consts.GlobalAuthor))
 
 	// 菜单底部UiPushEsc
 	menuFooter := lipgloss.NewStyle().

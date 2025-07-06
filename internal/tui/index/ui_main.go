@@ -37,16 +37,16 @@ func (m *Tui) navBar() string {
 	leftContent := lipgloss.JoinHorizontal(
 		lipgloss.Left,
 		lipgloss.NewStyle().Background(lipgloss.Color(consts.ColorDarkPrimary)).Padding(0, 2).Render(
-			lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(consts.ColorText)).Render("XiaoCode"),
+			lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(consts.ColorText)).Render(consts.GlobalName),
 		),
 		lipgloss.NewStyle().Background(lipgloss.Color(consts.ColorAccent)).Padding(0, 2).Render(
-			lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(consts.ColorText)).Render("v1.0.0"),
+			lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(consts.ColorText)).Render(consts.GlobalVersion),
 		),
 	)
 
 	// 右侧内容：作者信息
 	rightContent := lipgloss.NewStyle().Background(lipgloss.Color(consts.ColorDivider)).Padding(0, 2).Render(
-		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(consts.ColorPrimaryText)).Render("XiaoLFeng"),
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(consts.ColorPrimaryText)).Render(consts.GlobalAuthor),
 	)
 
 	// 计算中间需要的空间来实现 space-between 效果
@@ -201,21 +201,36 @@ func (m *Tui) footer() string {
 		BorderForeground(lipgloss.Color(consts.ColorDivider)).
 		Render(content)
 
-	if m.custom.plzInputContent {
-		plzInputContent := lipgloss.NewStyle().
+	if !m.custom.aiReady {
+		aiReady := lipgloss.NewStyle().
 			Bold(true).
 			Foreground(lipgloss.Color(consts.ColorText)).
-			Background(lipgloss.Color(consts.ColorDarkPurple)).
+			Background(lipgloss.Color(consts.ColorDarkGreen)).
 			Padding(1, 4).
 			Align(lipgloss.Center).
-			Render("♦︎ 请输入内容 ♦︎")
-
+			Render("♦︎ AI 未准备好「请在设置中配置 API」 ♦︎")
 		return lipgloss.JoinVertical(
 			lipgloss.Center,
-			plzInputContent,
+			aiReady,
 			inputContent,
 		)
 	} else {
-		return inputContent
+		if m.custom.plzInputContent {
+			plzInputContent := lipgloss.NewStyle().
+				Bold(true).
+				Foreground(lipgloss.Color(consts.ColorText)).
+				Background(lipgloss.Color(consts.ColorDarkPurple)).
+				Padding(1, 4).
+				Align(lipgloss.Center).
+				Render("♦︎ 请输入内容 ♦︎")
+
+			return lipgloss.JoinVertical(
+				lipgloss.Center,
+				plzInputContent,
+				inputContent,
+			)
+		} else {
+			return inputContent
+		}
 	}
 }
