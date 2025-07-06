@@ -31,7 +31,7 @@ var (
 	menuSelectedItemStyle = lipgloss.NewStyle().
 				Width(12).
 				Align(lipgloss.Center).
-				Background(lipgloss.Color(consts.ColorDarkGreen)).
+				Background(lipgloss.Color(consts.ColorDarkPrimary)).
 				Foreground(lipgloss.Color(consts.ColorText)).
 				Padding(0, 1)
 )

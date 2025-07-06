@@ -1,29 +1,20 @@
 package main
 
 import (
-	"time"
-
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/xiaocode-ai/xiaocode/internal/tui"
 	"github.com/xiaocode-ai/xiaocode/internal/tui/index"
 )
 
 func main() {
-	custom := index.NewCustom()
 	keyboard := index.NewKeyboard()
 
 	// 创建一个初始的 Model 实例
 	tui := tea.NewProgram(
-		tui.New(custom, keyboard),
+		tui.New(keyboard),
 		tea.WithAltScreen(),
 		tea.WithMouseCellMotion(),
 	)
-
-	// 模拟加载完成
-	go func() {
-		time.Sleep(time.Second * 1)
-		custom.SetLoading(false)
-	}()
 
 	// 运行程序
 	if _, err := tui.Run(); err != nil {
