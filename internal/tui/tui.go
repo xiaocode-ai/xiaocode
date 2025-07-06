@@ -7,7 +7,7 @@ import (
 
 var currentPage = "index"
 
-func New(keyboard *index.CustomKeyboard) tea.Model {
+func New(keyboard *index.Keyboard) tea.Model {
 	switch currentPage {
 	case "index":
 		return index.NewTui(keyboard)

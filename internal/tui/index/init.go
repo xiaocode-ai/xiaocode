@@ -2,9 +2,10 @@ package index
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
-	"github.com/charmbracelet/bubbles/textinput"
+	"github.com/charmbracelet/bubbles/textarea"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/google/uuid"
 	"github.com/xiaocode-ai/xiaocode/internal/consts"
 )
 
@@ -13,22 +14,38 @@ import (
 //
 
 type Tui struct {
-	spinner   spinner.Model
-	width     int
-	height    int
-	keyboard  *CustomKeyboard
-	textInput textinput.Model
+	spinner  spinner.Model  // 加载动画
+	width    int            // 窗口宽度
+	height   int            // 窗口高度
+	keyboard *Keyboard      // 键盘
+	textArea textarea.Model // 文本框
+	chat     *Chat          // 聊天
+	custom   *Custom        // 客制化内容
 }
 
-type CustomKeyboard struct {
-	esc bool
+type Keyboard struct {
+	esc bool // 是否按下 ESC
 }
 
-func (m Tui) Init() tea.Cmd {
+type Custom struct {
+	plzInputContent bool // 请输入内容
+}
+
+type Chat struct {
+	chatId string         // 聊天ID
+	chat   []*CurrentChat // 聊天内容
+}
+
+type CurrentChat struct {
+	user    string // 交流对象
+	content string // 交流内容
+}
+
+func (m *Tui) Init() tea.Cmd {
 	return m.spinner.Tick
 }
 
-func (m Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m *Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		if m.width != msg.Width || m.height != msg.Height {
@@ -52,9 +69,13 @@ func (m Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case tea.KeyEnter:
 				switch selectedMenuIndex {
 				case 0:
-					m.textInput.Reset()
+					m.textArea.SetHeight(1)
+					m.textArea.Reset()
+					return m, nil
 				case 1:
-					m.textInput.Reset()
+					m.textArea.SetHeight(1)
+					m.textArea.Reset()
+					return m, nil
 				case 4:
 					return m, tea.Quit
 				}
@@ -63,17 +84,30 @@ func (m Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		} else {
 			switch msg.Type {
-			case tea.KeyCtrlShiftDown:
-				var cmd tea.Cmd
-				m.textInput, cmd = m.textInput.Update("\n")
-				return m, cmd
+			case tea.KeyShiftRight:
+				currentText := m.textArea.Value()
+				newText := currentText + "\n"
+				m.textArea.SetValue(newText)
+				m.textArea.SetHeight(m.textArea.Height() + 1)
+				return m, nil
 			case tea.KeyEnter:
-				m.textInput.Reset()
-			case tea.KeyEsc:
+				m.textArea.SetHeight(1)
+				if m.textArea.Value() != "" {
+					m.chat.chat = append(m.chat.chat, &CurrentChat{
+						user:    "user",
+						content: m.textArea.Value(),
+					})
+				} else {
+					m.DisplayEnterContent()
+				}
+				m.textArea.Reset()
+				return m, nil
+			case tea.KeyEsc, tea.KeyCtrlC:
 				m.keyboard.esc = !m.keyboard.esc
+				return m, nil
 			default:
 				var cmd tea.Cmd
-				m.textInput, cmd = m.textInput.Update(msg)
+				m.textArea, cmd = m.textArea.Update(msg)
 				return m, cmd
 			}
 		}
@@ -86,7 +120,7 @@ func (m Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m Tui) View() string {
+func (m *Tui) View() string {
 	// 首先渲染主界面作为底层
 	mainUI := lipgloss.NewStyle().
 		Width(m.width).
@@ -106,23 +140,34 @@ func (m Tui) View() string {
 // 客制化内容
 //
 
-func NewKeyboard() *CustomKeyboard {
-	return &CustomKeyboard{
+func NewKeyboard() *Keyboard {
+	return &Keyboard{
 		esc: false,
 	}
 }
 
-func NewTui(keyboard *CustomKeyboard) *Tui {
+func NewTui(keyboard *Keyboard) *Tui {
 	spin := spinner.New()
 	spin.Spinner = spinner.MiniDot
 	spin.Style = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(consts.ColorDarkGreen))
 
-	input := textinput.New()
-	input.Focus()
+	ta := textarea.New()
+	ta.Focus()
+	ta.CharLimit = 0
+	ta.SetHeight(1)
+	ta.Prompt = ""
+	ta.ShowLineNumbers = false
 
 	return &Tui{
-		keyboard:  keyboard,
-		spinner:   spin,
-		textInput: input,
+		keyboard: keyboard,
+		spinner:  spin,
+		textArea: ta,
+		chat: &Chat{
+			chatId: uuid.New().String(),
+			chat:   []*CurrentChat{},
+		},
+		custom: &Custom{
+			plzInputContent: false,
+		},
 	}
 }

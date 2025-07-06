@@ -36,7 +36,7 @@ var (
 				Padding(0, 1)
 )
 
-func (m Tui) UiPushEsc() string {
+func (m *Tui) UiPushEsc() string {
 
 	menuStyleList := []string{}
 	for i, item := range menuItem {
