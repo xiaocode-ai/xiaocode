@@ -69,15 +69,15 @@ func (m *Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 			case tea.KeyEnter:
 				switch selectedMenuIndex {
-				case 0:
-					m.textArea.SetHeight(1)
-					m.textArea.Reset()
-					return m, nil
 				case 1:
 					m.textArea.SetHeight(1)
 					m.textArea.Reset()
-					return m, nil
+					return m, tea.Quit
+				case 5:
+					consts.SystemTuiPage = consts.TuiLog
+					return m, tea.Quit
 				default:
+					consts.SystemTuiPage = consts.TuiNil
 					return m, tea.Quit
 				}
 			default:
@@ -141,13 +141,7 @@ func (m *Tui) View() string {
 // 客制化内容
 //
 
-func NewKeyboard() *Keyboard {
-	return &Keyboard{
-		esc: false,
-	}
-}
-
-func NewTui(keyboard *Keyboard) *Tui {
+func NewTui() *Tui {
 	spin := spinner.New()
 	spin.Spinner = spinner.MiniDot
 	spin.Style = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(consts.ColorDarkGreen))
@@ -160,9 +154,11 @@ func NewTui(keyboard *Keyboard) *Tui {
 	ta.ShowLineNumbers = false
 
 	return &Tui{
-		keyboard: keyboard,
 		spinner:  spin,
 		textArea: ta,
+		keyboard: &Keyboard{
+			esc: false,
+		},
 		chat: &Chat{
 			chatId: uuid.New().String(),
 			chat:   []*CurrentChat{},
