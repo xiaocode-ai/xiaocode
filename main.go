@@ -3,8 +3,6 @@ package main
 import (
 	tea "github.com/charmbracelet/bubbletea"
 
-	_ "github.com/xiaocode-ai/xiaocode/internal/packed"
-
 	"github.com/xiaocode-ai/xiaocode/internal/app/setup"
 	"github.com/xiaocode-ai/xiaocode/internal/tui"
 	"github.com/xiaocode-ai/xiaocode/internal/tui/index"

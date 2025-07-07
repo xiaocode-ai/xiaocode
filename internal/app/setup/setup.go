@@ -3,11 +3,11 @@ package setup
 import "os"
 
 type Setup struct {
-	systemConfigDir string
+	SystemConfigDir string
 }
 
 func New() *Setup {
 	return &Setup{
-		systemConfigDir: os.Getenv("HOME") + "/.xiaocode",
+		SystemConfigDir: os.Getenv("HOME") + "/.xiaocode",
 	}
 }
