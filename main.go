@@ -24,13 +24,11 @@ func main() {
 		if consts.SystemTuiPage == consts.TuiNil {
 			break
 		}
-
 		program := tea.NewProgram(
 			tuiPage[consts.SystemTuiPage],
 			tea.WithAltScreen(),
 			tea.WithMouseCellMotion(),
 		)
-
 		if _, err := program.Run(); err != nil {
 			panic(err)
 		}
