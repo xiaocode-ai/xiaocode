@@ -2,6 +2,8 @@ package main
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/xiaocode-ai/xiaocode/pkg/xerr"
+	"github.com/xiaocode-ai/xiaocode/pkg/xlog"
 
 	"github.com/xiaocode-ai/xiaocode/internal/app/setup"
 	"github.com/xiaocode-ai/xiaocode/internal/consts"
@@ -10,6 +12,8 @@ import (
 )
 
 func main() {
+	xlog.Logger(xerr.XLevelDebug, xerr.XTagSetup, xerr.XSUCCESS, "系统初始化中......")
+
 	// 初始化配置
 	su := setup.New()
 	su.CheckAndCreateSystemProfile()
@@ -19,6 +23,9 @@ func main() {
 		consts.TuiMain: indexTui.NewTui(),
 		consts.TuiLog:  logTui.NewTui(),
 	}
+
+	// 系统启动
+	xlog.Logger(xerr.XLevelInfo, xerr.XTagSetup, xerr.XSUCCESS, "系统启动中")
 
 	for {
 		if consts.SystemTuiPage == consts.TuiNil {

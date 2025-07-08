@@ -4,6 +4,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/xiaocode-ai/xiaocode/internal/consts"
+	"github.com/xiaocode-ai/xiaocode/pkg/xlog"
 )
 
 //
@@ -11,9 +12,10 @@ import (
 //
 
 type Tui struct {
-	width    int       // 窗口宽度
-	height   int       // 窗口高度
-	keyboard *Keyboard // 键盘
+	width       int       // 窗口宽度
+	height      int       // 窗口高度
+	keyboard    *Keyboard // 键盘
+	logSelected int       // 当前选中的日志索引
 }
 
 type Keyboard struct {
@@ -34,9 +36,17 @@ func (m *Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 	case tea.KeyMsg:
 		switch msg.Type {
-		case tea.KeyEsc:
+		case tea.KeyEsc, tea.KeyCtrlC:
 			consts.SystemTuiPage = consts.TuiMain
 			return m, tea.Quit
+		case tea.KeyUp:
+			if m.logSelected > 0 {
+				m.logSelected--
+			}
+		case tea.KeyDown:
+			if m.logSelected < len(xlog.CustomLogs)-1 {
+				m.logSelected++
+			}
 		default:
 			return m, nil
 		}
