@@ -44,13 +44,23 @@ func (m *Tui) navBar() string {
 		),
 	)
 
-	// 计算空余位置
+	// 右侧内容：作者信息
+	rightContent := lipgloss.NewStyle().Background(lipgloss.Color(consts.ColorDivider)).Padding(0, 2).Render(
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(consts.ColorPrimaryText)).Render("?(Ctrl+/) 查看帮助"),
+	)
+
+	// 计算中间需要的空间来实现 space-between 效果
+	leftWidth := lipgloss.Width(leftContent)
+	rightWidth := lipgloss.Width(rightContent)
+	totalUsedWidth := leftWidth + rightWidth
+
+	// 如果终端宽度足够，计算中间空间
 	var middleSpace string
-	if m.width > lipgloss.Width(leftContent)+4 {
-		spaceWidth := m.width - lipgloss.Width(leftContent) - 4
-		middleSpace = strings.Repeat(" ", spaceWidth)
-	} else {
-		middleSpace = ""
+	if m.width > totalUsedWidth {
+		spaceWidth := m.width - totalUsedWidth - 4
+		if spaceWidth > 0 {
+			middleSpace = strings.Repeat(" ", spaceWidth)
+		}
 	}
 
 	// 顶部内容
@@ -58,6 +68,7 @@ func (m *Tui) navBar() string {
 		lipgloss.Left,
 		leftContent,
 		middleSpace,
+		rightContent,
 	)
 }
 
@@ -102,6 +113,7 @@ func (m *Tui) logList(height, width int) (string, string) {
 			reverseLog[len(xlog.CustomLogs)-1-i] = xlog.CustomLogs[i]
 		}
 	} else {
+		m.viewport.SetContent(lipgloss.NewStyle().Render("暂无日志"))
 		return lipgloss.NewStyle().Render("暂无日志"), ""
 	}
 
@@ -136,20 +148,25 @@ func (m *Tui) logList(height, width int) (string, string) {
 		}
 		tableRender := lipgloss.JoinHorizontal(
 			lipgloss.Left,
-			style.Width(25).Align(lipgloss.Center).Render(singleLog.Time.Format("2006-01-02 15:04:05")),
+			style.Width(25).Render(singleLog.Time.Format("2006-01-02 15:04:05")),
 			levelLight.Render(singleLog.Level),
 			style.Width(15).Render(singleLog.Tag),
 			style.Width(15).Render(singleLog.Status),
 		)
 		lightStyle = append(lightStyle, tableRender)
 	}
+
+	// 设置viewport的内容
+	logContent := lipgloss.JoinVertical(lipgloss.Left, lightStyle...)
+	m.viewport.SetContent(logContent)
+
 	return lipgloss.NewStyle().
 		Width(width-2).
 		Border(xtui.RightConnectNormalTable()).
 		Height(height).
 		Padding(1, 2).
 		Render(
-			lipgloss.JoinVertical(lipgloss.Left, lightStyle...),
+			m.viewport.View(),
 		), selectedLog
 }
 

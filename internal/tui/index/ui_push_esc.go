@@ -40,7 +40,7 @@ var (
 
 func (m *Tui) UiPushEsc() string {
 
-	menuStyleList := []string{}
+	var menuStyleList []string
 	for i, item := range menuItem {
 		if i == selectedMenuIndex {
 			menuStyleList = append(menuStyleList, menuSelectedItemStyle.Render(item))
