@@ -13,4 +13,5 @@ const (
 var (
 	GlobalSystemProfile  *dto.SystemConfigDTO  // 系统配置文件
 	GlobalProjectProfile *dto.ProjectConfigDTO // 项目配置文件
+	GlobalWaitQuit       = false               // 全局等待退出标志
 )
