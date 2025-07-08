@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/xiaocode-ai/xiaocode/pkg/xerr"
 	"github.com/xiaocode-ai/xiaocode/pkg/xlog"
@@ -17,6 +18,7 @@ func main() {
 	// 初始化配置
 	su := setup.New()
 	su.CheckAndCreateSystemProfile()
+	su.CheckAndCreateProjectProfile()
 
 	// 当前 TUI 页面
 	var tuiPage = map[string]tea.Model{
@@ -24,13 +26,11 @@ func main() {
 		consts.TuiLog:  logTui.NewTui(),
 	}
 
-	// 系统启动
-	xlog.Logger(xerr.XLevelInfo, xerr.XTagSetup, xerr.XSUCCESS, "系统启动中")
-
 	for {
 		if consts.SystemTuiPage == consts.TuiNil {
 			break
 		}
+		xlog.Logger(xerr.XLevelDebug, xerr.XTagTui, xerr.XSUCCESS, fmt.Sprintf("当前 TUI 页面: %s", consts.SystemTuiPage))
 		program := tea.NewProgram(
 			tuiPage[consts.SystemTuiPage],
 			tea.WithAltScreen(),

@@ -14,7 +14,7 @@ func Logger(level xerr.XLevel, tag xerr.XTag, status xerr.XStatus, message strin
 		Time:    time.Now(),
 		Status:  status,
 		Level:   level,
-		Tag:     xerr.XTagSetup,
+		Tag:     tag,
 		Message: message,
 	})
 }
