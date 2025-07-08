@@ -19,6 +19,8 @@ func main() {
 	su := setup.New()
 	su.CheckAndCreateSystemProfile()
 	su.CheckAndCreateProjectProfile()
+	su.ConnectSystemDatabase()
+	su.ConnectProjectDatabase()
 
 	// 当前 TUI 页面
 	var tuiPage = map[string]tea.Model{
@@ -40,5 +42,4 @@ func main() {
 			panic(err)
 		}
 	}
-
 }

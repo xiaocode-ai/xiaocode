@@ -1,9 +1,14 @@
 package setup
 
-import "os"
+import (
+	"gorm.io/gorm"
+	"os"
+)
 
 type Setup struct {
 	SystemConfigDir string
+	SystemDB        *gorm.DB
+	ProjectDB       *gorm.DB
 }
 
 func New() *Setup {
