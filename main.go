@@ -29,6 +29,7 @@ func main() {
 		su.CheckAndCreateProjectProfile()
 		su.ConnectSystemDatabase()
 		su.ConnectProjectDatabase()
+		su.SystemDatabaseDataPrepare()
 		su.Final()
 	}()
 

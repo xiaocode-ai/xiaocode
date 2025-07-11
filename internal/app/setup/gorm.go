@@ -24,6 +24,7 @@ func (s *Setup) ConnectSystemDatabase() {
 	// 数据库迁移内容保存
 	migrateErr := db.AutoMigrate(
 		&entity.AiApiEntity{},
+		&entity.SystemEntity{},
 	)
 	if migrateErr != nil {
 		xlog.Logger(xerr.XLevelError, xerr.XTagSetup, xerr.XFAIL, "数据库迁移失败: "+migrateErr.Error())
