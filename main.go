@@ -45,7 +45,7 @@ func main() {
 	var tuiPage = map[string]tea.Model{
 		consts.TuiMain: indexTui.NewTui(),
 		consts.TuiLog:  logTui.NewTui(),
-		consts.TuiAi:   aiTui.NewTui(),
+		consts.TuiAi:   aiTui.NewTui(su.SystemDB),
 	}
 	for {
 		if consts.SystemTuiPage == consts.TuiNil {
