@@ -6,6 +6,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/xiaocode-ai/xiaocode/internal/consts"
 	"github.com/xiaocode-ai/xiaocode/pkg/xlog"
+	"strings"
 )
 
 //
@@ -92,7 +93,7 @@ func (m *Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.logSelected = len(xlog.CustomLogs) - 1
 			m.showHelp = !m.showHelp
 		default:
-			switch msg.String() {
+			switch strings.ToLower(msg.String()) {
 			case "?", "shift+/", "shift+?":
 				m.showHelp = !m.showHelp
 			default:

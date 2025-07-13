@@ -69,9 +69,8 @@ func (m *Tui) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 			case tea.KeyEnter:
 				switch selectedMenuIndex {
-				case 1:
-					m.textArea.SetHeight(1)
-					m.textArea.Reset()
+				case 3:
+					consts.SystemTuiPage = consts.TuiAi
 					return m, tea.Quit
 				case 5:
 					consts.SystemTuiPage = consts.TuiLog

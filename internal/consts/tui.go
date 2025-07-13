@@ -7,5 +7,6 @@ var (
 const (
 	TuiMain = "MAIN" // 主 TUI 页面
 	TuiLog  = "LOG"  // 日志 TUI 页面
+	TuiAi   = "AI"   // AI API TUI 页面
 	TuiNil  = "NIL"  // 空 TUI 页面
 )

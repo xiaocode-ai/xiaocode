@@ -1,4 +1,4 @@
-package log
+package ai
 
 import (
 	"fmt"
@@ -25,7 +25,7 @@ func (m *Tui) UiShowQuestion() string {
 		Width(calcWidth-4).
 		Padding(1, 2).
 		Align(lipgloss.Center).
-		Render(fmt.Sprintf("%s 日志使用帮助", consts.GlobalName))
+		Render(fmt.Sprintf("%s AI 配置使用帮助", consts.GlobalName))
 	// 构建帮助内容
 	leftContent := lipgloss.NewStyle().
 		Width(calcWidth/2-4).
@@ -46,8 +46,8 @@ func (m *Tui) UiShowQuestion() string {
 		Render(
 			lipgloss.JoinVertical(
 				lipgloss.Center,
+				"N      创建AI组",
 				"Esc    退出帮助",
-				"Ctrl+C 退出帮助",
 				"Home   首个日志",
 				"End    末尾日志",
 			),

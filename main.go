@@ -5,6 +5,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/xiaocode-ai/xiaocode/internal/app/setup"
 	"github.com/xiaocode-ai/xiaocode/internal/consts"
+	aiTui "github.com/xiaocode-ai/xiaocode/internal/tui/ai"
 	indexTui "github.com/xiaocode-ai/xiaocode/internal/tui/index"
 	logTui "github.com/xiaocode-ai/xiaocode/internal/tui/log"
 	waitTui "github.com/xiaocode-ai/xiaocode/internal/tui/wait"
@@ -44,6 +45,7 @@ func main() {
 	var tuiPage = map[string]tea.Model{
 		consts.TuiMain: indexTui.NewTui(),
 		consts.TuiLog:  logTui.NewTui(),
+		consts.TuiAi:   aiTui.NewTui(),
 	}
 	for {
 		if consts.SystemTuiPage == consts.TuiNil {
